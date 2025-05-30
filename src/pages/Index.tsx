@@ -1,11 +1,155 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import React, { useState, useEffect } from 'react';
+import { Calendar, Heart, TrendingUp, Bell, Plus, CheckCircle } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import TriggerForm from '@/components/TriggerForm';
+import HealthySuggestions from '@/components/HealthySuggestions';
+import ProgressChart from '@/components/ProgressChart';
+import MotivationalMessage from '@/components/MotivationalMessage';
+
+interface TriggerRecord {
+  id: string;
+  date: string;
+  time: string;
+  emotion: string;
+  situation: string;
+  intensity: number;
+}
 
 const Index = () => {
+  const [showTriggerForm, setShowTriggerForm] = useState(false);
+  const [triggerRecords, setTriggerRecords] = useState<TriggerRecord[]>([]);
+  const [currentStreak, setCurrentStreak] = useState(0);
+
+  useEffect(() => {
+    // Load saved records from localStorage
+    const saved = localStorage.getItem('triggerRecords');
+    if (saved) {
+      setTriggerRecords(JSON.parse(saved));
+    }
+
+    // Calculate current streak
+    const today = new Date().toDateString();
+    const todayRecords = triggerRecords.filter(record => 
+      new Date(record.date).toDateString() === today
+    );
+    setCurrentStreak(todayRecords.length);
+  }, [triggerRecords]);
+
+  const addTriggerRecord = (record: Omit<TriggerRecord, 'id'>) => {
+    const newRecord = {
+      ...record,
+      id: Date.now().toString()
+    };
+    const updatedRecords = [...triggerRecords, newRecord];
+    setTriggerRecords(updatedRecords);
+    localStorage.setItem('triggerRecords', JSON.stringify(updatedRecords));
+    setShowTriggerForm(false);
+  };
+
+  const todayRecords = triggerRecords.filter(record => 
+    new Date(record.date).toDateString() === new Date().toDateString()
+  ).length;
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+      <div className="container mx-auto px-4 py-6 max-w-4xl">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold text-gray-800 mb-2">
+            Respira Livre 🌱
+          </h1>
+          <p className="text-gray-600">
+            Sua jornada para uma vida sem cigarro, um passo de cada vez
+          </p>
+        </div>
+
+        {/* Motivational Message */}
+        <MotivationalMessage />
+
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+          <Card className="bg-gradient-to-r from-green-400 to-green-500 text-white">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium flex items-center">
+                <CheckCircle className="w-4 h-4 mr-2" />
+                Registros Hoje
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{todayRecords}</div>
+              <p className="text-green-100 text-xs">
+                Autoconsciência em ação
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-gradient-to-r from-blue-400 to-blue-500 text-white">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium flex items-center">
+                <TrendingUp className="w-4 h-4 mr-2" />
+                Total de Registros
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{triggerRecords.length}</div>
+              <p className="text-blue-100 text-xs">
+                Conhecimento sobre si mesmo
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-gradient-to-r from-purple-400 to-purple-500 text-white">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium flex items-center">
+                <Heart className="w-4 h-4 mr-2" />
+                Dias Ativos
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">
+                {new Set(triggerRecords.map(r => new Date(r.date).toDateString())).size}
+              </div>
+              <p className="text-purple-100 text-xs">
+                Comprometimento diário
+              </p>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Quick Actions */}
+        <div className="mb-8">
+          <Button
+            onClick={() => setShowTriggerForm(true)}
+            className="w-full bg-gradient-to-r from-orange-400 to-orange-500 hover:from-orange-500 hover:to-orange-600 text-white font-semibold py-4 rounded-xl shadow-lg transform transition hover:scale-105"
+            size="lg"
+          >
+            <Plus className="w-5 h-5 mr-2" />
+            Registrar Gatilho ou Vontade
+          </Button>
+        </div>
+
+        {/* Main Content */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Healthy Suggestions */}
+          <HealthySuggestions />
+
+          {/* Progress Chart */}
+          <ProgressChart records={triggerRecords} />
+        </div>
+
+        {/* Trigger Form Modal */}
+        {showTriggerForm && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+            <div className="bg-white rounded-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+              <TriggerForm
+                onSubmit={addTriggerRecord}
+                onCancel={() => setShowTriggerForm(false)}
+              />
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
