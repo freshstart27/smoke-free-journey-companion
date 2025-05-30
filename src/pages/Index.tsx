@@ -3,10 +3,13 @@ import React, { useState, useEffect } from 'react';
 import { Calendar, Heart, TrendingUp, Bell, Plus, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import TriggerForm from '@/components/TriggerForm';
 import HealthySuggestions from '@/components/HealthySuggestions';
 import ProgressChart from '@/components/ProgressChart';
 import MotivationalMessage from '@/components/MotivationalMessage';
+import SmokingTracker from '@/components/SmokingTracker';
+import QuitBenefits from '@/components/QuitBenefits';
 
 interface TriggerRecord {
   id: string;
@@ -130,14 +133,37 @@ const Index = () => {
           </Button>
         </div>
 
-        {/* Main Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Healthy Suggestions */}
-          <HealthySuggestions />
+        {/* Main Content with Tabs */}
+        <Tabs defaultValue="overview" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-4">
+            <TabsTrigger value="overview">Visão Geral</TabsTrigger>
+            <TabsTrigger value="tracker">Rastreamento</TabsTrigger>
+            <TabsTrigger value="benefits">Benefícios</TabsTrigger>
+            <TabsTrigger value="suggestions">Dicas</TabsTrigger>
+          </TabsList>
 
-          {/* Progress Chart */}
-          <ProgressChart records={triggerRecords} />
-        </div>
+          <TabsContent value="overview" className="space-y-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              {/* Healthy Suggestions */}
+              <HealthySuggestions />
+
+              {/* Progress Chart */}
+              <ProgressChart records={triggerRecords} />
+            </div>
+          </TabsContent>
+
+          <TabsContent value="tracker">
+            <SmokingTracker />
+          </TabsContent>
+
+          <TabsContent value="benefits">
+            <QuitBenefits />
+          </TabsContent>
+
+          <TabsContent value="suggestions">
+            <HealthySuggestions />
+          </TabsContent>
+        </Tabs>
 
         {/* Trigger Form Modal */}
         {showTriggerForm && (
