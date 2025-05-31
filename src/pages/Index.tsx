@@ -56,7 +56,7 @@ const Index = () => {
   ).length;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-red-50 to-amber-50">
       <div className="container mx-auto px-4 py-6 max-w-4xl">
         {/* Header */}
         <div className="text-center mb-8">
@@ -95,7 +95,7 @@ const Index = () => {
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-r from-blue-400 to-blue-500 text-white">
+          <Card className="bg-gradient-to-r from-orange-400 to-red-500 text-white">
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-medium flex items-center">
                 <TrendingUp className="w-4 h-4 mr-2" />
@@ -104,13 +104,13 @@ const Index = () => {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{triggerRecords.length}</div>
-              <p className="text-blue-100 text-xs">
+              <p className="text-orange-100 text-xs">
                 Conhecimento sobre si mesmo
               </p>
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-r from-purple-400 to-purple-500 text-white">
+          <Card className="bg-gradient-to-r from-red-400 to-red-600 text-white">
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-medium flex items-center">
                 <Heart className="w-4 h-4 mr-2" />
@@ -121,7 +121,7 @@ const Index = () => {
               <div className="text-2xl font-bold">
                 {new Set(triggerRecords.map(r => new Date(r.date).toDateString())).size}
               </div>
-              <p className="text-purple-100 text-xs">
+              <p className="text-red-100 text-xs">
                 Comprometimento diário
               </p>
             </CardContent>
@@ -132,7 +132,7 @@ const Index = () => {
         <div className="mb-8">
           <Button
             onClick={() => setShowTriggerForm(true)}
-            className="w-full bg-gradient-to-r from-orange-400 to-orange-500 hover:from-orange-500 hover:to-orange-600 text-white font-semibold py-4 rounded-xl shadow-lg transform transition hover:scale-105"
+            className="w-full bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white font-semibold py-4 rounded-xl shadow-lg transform transition hover:scale-105"
             size="lg"
           >
             <Plus className="w-5 h-5 mr-2" />
