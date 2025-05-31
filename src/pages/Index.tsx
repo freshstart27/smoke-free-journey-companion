@@ -60,8 +60,15 @@ const Index = () => {
       <div className="container mx-auto px-4 py-6 max-w-4xl">
         {/* Header */}
         <div className="text-center mb-8">
+          <div className="flex justify-center mb-4">
+            <img 
+              src="/lovable-uploads/29e26fee-ae10-4924-b1cf-b92588d751d3.png" 
+              alt="Fresh Start Logo" 
+              className="h-24 w-auto"
+            />
+          </div>
           <h1 className="text-3xl font-bold text-gray-800 mb-2">
-            Fresh Start 🌱
+            Fresh Start
           </h1>
           <p className="text-gray-600">
             Sua jornada para uma vida sem cigarro, um passo de cada vez
