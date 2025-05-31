@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Heart, DollarSign, CheckCircle, Cigarette } from 'lucide-react';
@@ -17,7 +18,7 @@ interface Benefit {
 
 const QuitBenefits: React.FC = () => {
   const [smokingRecords, setSmokingRecords] = useState<SmokingRecord[]>([]);
-  const [cigarettePrice, setCigarettePrice] = useState(0.50); // R$ por cigarro
+  const [cigarettePrice, setCigarettePrice] = useState(0.50); // € por cigarro
   const [dailyAverage, setDailyAverage] = useState(20);
 
   useEffect(() => {
@@ -159,7 +160,7 @@ const QuitBenefits: React.FC = () => {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">R$ {moneySaved.toFixed(2)}</div>
+            <div className="text-2xl font-bold">€{moneySaved.toFixed(2)}</div>
             <p className="text-blue-100 text-xs">
               {cigarettesNotSmoked} cigarros não fumados
             </p>
