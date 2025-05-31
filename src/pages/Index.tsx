@@ -61,7 +61,7 @@ const Index = () => {
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-gray-800 mb-2">
-            Respira Livre 🌱
+            Fresh Start 🌱
           </h1>
           <p className="text-gray-600">
             Sua jornada para uma vida sem cigarro, um passo de cada vez
