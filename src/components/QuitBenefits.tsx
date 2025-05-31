@@ -1,7 +1,6 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Heart, DollarSign, CheckCircle } from 'lucide-react';
+import { Heart, DollarSign, CheckCircle, Cigarette } from 'lucide-react';
 
 interface SmokingRecord {
   date: string;
