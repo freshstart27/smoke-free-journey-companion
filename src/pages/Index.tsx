@@ -62,7 +62,7 @@ const Index = () => {
         <div className="text-center mb-8">
           <div className="flex justify-center mb-4">
             <img 
-              src="/lovable-uploads/29e26fee-ae10-4924-b1cf-b92588d751d3.png" 
+              src="/lovable-uploads/8f24ce16-0605-4280-9f46-4cffbbb06664.png" 
               alt="Fresh Start Logo" 
               className="h-24 w-auto"
             />
