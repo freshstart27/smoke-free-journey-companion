@@ -56,7 +56,7 @@ const Index = () => {
   ).length;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-red-50 to-amber-50">
+    <div className="min-h-screen" style={{ backgroundColor: '#F5F5F5' }}>
       <div className="container mx-auto px-4 py-6 max-w-4xl">
         {/* Header */}
         <div className="text-center mb-8">
@@ -67,10 +67,10 @@ const Index = () => {
               className="h-24 w-auto"
             />
           </div>
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">
+          <h1 className="text-3xl font-bold mb-2" style={{ color: '#333333' }}>
             Fresh Start
           </h1>
-          <p className="text-gray-600">
+          <p style={{ color: '#666666' }}>
             Sua jornada para uma vida sem cigarro, um passo de cada vez
           </p>
         </div>
@@ -80,7 +80,7 @@ const Index = () => {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-          <Card className="bg-gradient-to-r from-green-400 to-green-500 text-white">
+          <Card className="text-white" style={{ background: '#388E3C' }}>
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-medium flex items-center">
                 <CheckCircle className="w-4 h-4 mr-2" />
@@ -95,7 +95,7 @@ const Index = () => {
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-r from-orange-400 to-red-500 text-white">
+          <Card className="text-white" style={{ background: 'linear-gradient(to right, #A8E6CF, #388E3C)' }}>
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-medium flex items-center">
                 <TrendingUp className="w-4 h-4 mr-2" />
@@ -104,13 +104,13 @@ const Index = () => {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{triggerRecords.length}</div>
-              <p className="text-orange-100 text-xs">
+              <p className="text-green-100 text-xs">
                 Conhecimento sobre si mesmo
               </p>
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-r from-red-400 to-red-600 text-white">
+          <Card className="text-white" style={{ background: '#A8E6CF', color: '#333333' }}>
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-medium flex items-center">
                 <Heart className="w-4 h-4 mr-2" />
@@ -121,7 +121,7 @@ const Index = () => {
               <div className="text-2xl font-bold">
                 {new Set(triggerRecords.map(r => new Date(r.date).toDateString())).size}
               </div>
-              <p className="text-red-100 text-xs">
+              <p className="text-xs opacity-80">
                 Comprometimento diário
               </p>
             </CardContent>
@@ -132,8 +132,18 @@ const Index = () => {
         <div className="mb-8">
           <Button
             onClick={() => setShowTriggerForm(true)}
-            className="w-full bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white font-semibold py-4 rounded-xl shadow-lg transform transition hover:scale-105"
+            className="w-full text-white font-semibold py-4 rounded-xl shadow-lg transform transition hover:scale-105"
+            style={{ 
+              background: '#388E3C',
+              border: 'none'
+            }}
             size="lg"
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = '#2E7D32';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = '#388E3C';
+            }}
           >
             <Plus className="w-5 h-5 mr-2" />
             Registrar Gatilho ou Vontade
@@ -142,11 +152,35 @@ const Index = () => {
 
         {/* Main Content with Tabs */}
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="overview">Visão Geral</TabsTrigger>
-            <TabsTrigger value="tracker">Rastreamento</TabsTrigger>
-            <TabsTrigger value="benefits">Benefícios</TabsTrigger>
-            <TabsTrigger value="suggestions">Dicas</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-4" style={{ backgroundColor: '#D0F0FD' }}>
+            <TabsTrigger 
+              value="overview" 
+              className="data-[state=active]:bg-white data-[state=active]:text-gray-800"
+              style={{ color: '#333333' }}
+            >
+              Visão Geral
+            </TabsTrigger>
+            <TabsTrigger 
+              value="tracker" 
+              className="data-[state=active]:bg-white data-[state=active]:text-gray-800"
+              style={{ color: '#333333' }}
+            >
+              Rastreamento
+            </TabsTrigger>
+            <TabsTrigger 
+              value="benefits" 
+              className="data-[state=active]:bg-white data-[state=active]:text-gray-800"
+              style={{ color: '#333333' }}
+            >
+              Benefícios
+            </TabsTrigger>
+            <TabsTrigger 
+              value="suggestions" 
+              className="data-[state=active]:bg-white data-[state=active]:text-gray-800"
+              style={{ color: '#333333' }}
+            >
+              Dicas
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-8">

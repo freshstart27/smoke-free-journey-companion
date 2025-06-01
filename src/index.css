@@ -1,92 +1,86 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 255 255 255;
+    --foreground: 51 51 51;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 255 255 255;
+    --card-foreground: 51 51 51;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 255 255 255;
+    --popover-foreground: 51 51 51;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 56 142 60;
+    --primary-foreground: 255 255 255;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 168 230 207;
+    --secondary-foreground: 51 51 51;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 245 245 245;
+    --muted-foreground: 102 102 102;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 208 240 253;
+    --accent-foreground: 51 51 51;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 255 138 128;
+    --destructive-foreground: 51 51 51;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 208 240 253;
+    --input: 208 240 253;
+    --ring: 56 142 60;
 
     --radius: 0.5rem;
 
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 245 245 245;
+    --sidebar-foreground: 51 51 51;
+    --sidebar-primary: 56 142 60;
+    --sidebar-primary-foreground: 255 255 255;
+    --sidebar-accent: 168 230 207;
+    --sidebar-accent-foreground: 51 51 51;
+    --sidebar-border: 208 240 253;
+    --sidebar-ring: 56 142 60;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    --background: 51 51 51;
+    --foreground: 255 255 255;
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: 51 51 51;
+    --card-foreground: 255 255 255;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 51 51 51;
+    --popover-foreground: 255 255 255;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 168 230 207;
+    --primary-foreground: 51 51 51;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 56 142 60;
+    --secondary-foreground: 255 255 255;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 102 102 102;
+    --muted-foreground: 208 240 253;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 56 142 60;
+    --accent-foreground: 255 255 255;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 255 138 128;
+    --destructive-foreground: 51 51 51;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --border: 56 142 60;
+    --input: 56 142 60;
+    --ring: 168 230 207;
+    --sidebar-background: 51 51 51;
+    --sidebar-foreground: 255 255 255;
+    --sidebar-primary: 168 230 207;
+    --sidebar-primary-foreground: 51 51 51;
+    --sidebar-accent: 56 142 60;
+    --sidebar-accent-foreground: 255 255 255;
+    --sidebar-border: 56 142 60;
+    --sidebar-ring: 168 230 207;
   }
 }
 
@@ -97,5 +91,44 @@
 
   body {
     @apply bg-background text-foreground;
+    background-color: #F5F5F5;
+    color: #333333;
   }
+}
+
+/* Custom utility classes for the new color palette */
+.bg-mint-green {
+  background-color: #A8E6CF;
+}
+
+.bg-soft-blue {
+  background-color: #D0F0FD;
+}
+
+.bg-light-gray {
+  background-color: #F5F5F5;
+}
+
+.bg-dark-green {
+  background-color: #388E3C;
+}
+
+.bg-soft-coral {
+  background-color: #FF8A80;
+}
+
+.text-primary-dark {
+  color: #333333;
+}
+
+.text-secondary {
+  color: #666666;
+}
+
+.border-soft-blue {
+  border-color: #D0F0FD;
+}
+
+.border-mint-green {
+  border-color: #A8E6CF;
 }
