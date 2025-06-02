@@ -10,6 +10,7 @@ import ProgressChart from '@/components/ProgressChart';
 import MotivationalMessage from '@/components/MotivationalMessage';
 import SmokingTracker from '@/components/SmokingTracker';
 import QuitBenefits from '@/components/QuitBenefits';
+import FeedbackForm from '@/components/FeedbackForm';
 
 interface TriggerRecord {
   id: string;
@@ -152,7 +153,7 @@ const Index = () => {
 
         {/* Main Content with Tabs */}
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4" style={{ backgroundColor: '#D0F0FD' }}>
+          <TabsList className="grid w-full grid-cols-5" style={{ backgroundColor: '#D0F0FD' }}>
             <TabsTrigger 
               value="overview" 
               className="data-[state=active]:bg-white data-[state=active]:text-gray-800"
@@ -181,6 +182,13 @@ const Index = () => {
             >
               Dicas
             </TabsTrigger>
+            <TabsTrigger 
+              value="feedback" 
+              className="data-[state=active]:bg-white data-[state=active]:text-gray-800"
+              style={{ color: '#333333' }}
+            >
+              Feedback
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-8">
@@ -203,6 +211,10 @@ const Index = () => {
 
           <TabsContent value="suggestions">
             <HealthySuggestions />
+          </TabsContent>
+
+          <TabsContent value="feedback">
+            <FeedbackForm />
           </TabsContent>
         </Tabs>
 
