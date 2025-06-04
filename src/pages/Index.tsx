@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Calendar, Heart, TrendingUp, Bell, Plus, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -11,6 +10,7 @@ import MotivationalMessage from '@/components/MotivationalMessage';
 import SmokingTracker from '@/components/SmokingTracker';
 import QuitBenefits from '@/components/QuitBenefits';
 import FeedbackForm from '@/components/FeedbackForm';
+import { storageManager } from '@/utils/storageManager';
 
 interface TriggerRecord {
   id: string;
@@ -27,19 +27,17 @@ const Index = () => {
   const [currentStreak, setCurrentStreak] = useState(0);
 
   useEffect(() => {
-    // Load saved records from localStorage
-    const saved = localStorage.getItem('triggerRecords');
-    if (saved) {
-      setTriggerRecords(JSON.parse(saved));
-    }
+    // Carregar registos usando o novo sistema
+    const records = storageManager.getTriggerRecords();
+    setTriggerRecords(records);
 
-    // Calculate current streak
+    // Calcular streak atual
     const today = new Date().toDateString();
-    const todayRecords = triggerRecords.filter(record => 
+    const todayRecords = records.filter(record => 
       new Date(record.date).toDateString() === today
     );
     setCurrentStreak(todayRecords.length);
-  }, [triggerRecords]);
+  }, []);
 
   const addTriggerRecord = (record: Omit<TriggerRecord, 'id'>) => {
     const newRecord = {
@@ -48,7 +46,7 @@ const Index = () => {
     };
     const updatedRecords = [...triggerRecords, newRecord];
     setTriggerRecords(updatedRecords);
-    localStorage.setItem('triggerRecords', JSON.stringify(updatedRecords));
+    storageManager.saveTriggerRecords(updatedRecords);
     setShowTriggerForm(false);
   };
 
@@ -85,7 +83,7 @@ const Index = () => {
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-medium flex items-center">
                 <CheckCircle className="w-4 h-4 mr-2" />
-                Registros Hoje
+                Registos Hoje
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -100,7 +98,7 @@ const Index = () => {
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-medium flex items-center">
                 <TrendingUp className="w-4 h-4 mr-2" />
-                Total de Registros
+                Total de Registos
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -147,7 +145,7 @@ const Index = () => {
             }}
           >
             <Plus className="w-5 h-5 mr-2" />
-            Registrar Gatilho ou Vontade
+            Registar Gatilho ou Vontade
           </Button>
         </div>
 

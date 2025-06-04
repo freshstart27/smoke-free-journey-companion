@@ -1,10 +1,10 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Calendar, Minus, Plus, Cigarette } from 'lucide-react';
+import { storageManager } from '@/utils/storageManager';
 
 interface SmokingRecord {
   date: string;
@@ -17,20 +17,16 @@ const SmokingTracker: React.FC = () => {
   const [dailyTarget, setDailyTarget] = useState(20);
 
   useEffect(() => {
-    // Load saved records from localStorage
-    const saved = localStorage.getItem('smokingRecords');
-    if (saved) {
-      setSmokingRecords(JSON.parse(saved));
-    }
+    // Carregar dados do novo sistema de storage
+    const records = storageManager.getSmokingRecords();
+    setSmokingRecords(records);
     
-    const savedTarget = localStorage.getItem('dailyTarget');
-    if (savedTarget) {
-      setDailyTarget(parseInt(savedTarget));
-    }
+    const target = storageManager.getDailyTarget();
+    setDailyTarget(target);
 
-    // Load today's count
+    // Carregar contagem de hoje
     const today = new Date().toISOString().split('T')[0];
-    const todayRecord = JSON.parse(saved || '[]').find((record: SmokingRecord) => record.date === today);
+    const todayRecord = records.find((record: SmokingRecord) => record.date === today);
     if (todayRecord) {
       setTodayCigarettes(todayRecord.cigarettes);
     }
@@ -48,12 +44,12 @@ const SmokingTracker: React.FC = () => {
     }
     
     setSmokingRecords(updatedRecords);
-    localStorage.setItem('smokingRecords', JSON.stringify(updatedRecords));
+    storageManager.saveSmokingRecords(updatedRecords);
   };
 
   const updateDailyTarget = (target: number) => {
     setDailyTarget(target);
-    localStorage.setItem('dailyTarget', target.toString());
+    storageManager.saveDailyTarget(target);
   };
 
   const getProgressPercentage = () => {

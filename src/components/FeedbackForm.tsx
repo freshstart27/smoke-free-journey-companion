@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -7,6 +6,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { MessageSquare, Star, Send } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { storageManager } from '@/utils/storageManager';
 
 const FeedbackForm = () => {
   const [name, setName] = useState('');
@@ -19,7 +19,7 @@ const FeedbackForm = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Simulate saving feedback (in a real app, you'd send this to a backend)
+    // Criar objeto de feedback
     const feedback = {
       name,
       email,
@@ -29,10 +29,10 @@ const FeedbackForm = () => {
       timestamp: new Date().toISOString()
     };
     
-    // Save to localStorage for now
-    const existingFeedback = JSON.parse(localStorage.getItem('appFeedback') || '[]');
+    // Guardar usando o novo sistema de storage
+    const existingFeedback = storageManager.getFeedback();
     existingFeedback.push(feedback);
-    localStorage.setItem('appFeedback', JSON.stringify(existingFeedback));
+    storageManager.saveFeedback(existingFeedback);
     
     toast({
       title: "Feedback Enviado!",
