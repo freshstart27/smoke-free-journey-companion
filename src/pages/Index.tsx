@@ -10,6 +10,7 @@ import MotivationalMessage from '@/components/MotivationalMessage';
 import SmokingTracker from '@/components/SmokingTracker';
 import QuitBenefits from '@/components/QuitBenefits';
 import FeedbackForm from '@/components/FeedbackForm';
+import DataExport from '@/components/DataExport';
 import { storageManager } from '@/utils/storageManager';
 
 interface TriggerRecord {
@@ -211,8 +212,9 @@ const Index = () => {
             <HealthySuggestions />
           </TabsContent>
 
-          <TabsContent value="feedback">
+          <TabsContent value="feedback" className="space-y-6">
             <FeedbackForm />
+            <DataExport />
           </TabsContent>
         </Tabs>
 
