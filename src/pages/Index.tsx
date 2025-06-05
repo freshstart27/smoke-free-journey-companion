@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Calendar, Heart, TrendingUp, Bell, Plus, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -11,6 +12,7 @@ import SmokingTracker from '@/components/SmokingTracker';
 import QuitBenefits from '@/components/QuitBenefits';
 import FeedbackForm from '@/components/FeedbackForm';
 import DataExport from '@/components/DataExport';
+import UserManager from '@/components/UserManager';
 import { storageManager } from '@/utils/storageManager';
 
 interface TriggerRecord {
@@ -22,13 +24,30 @@ interface TriggerRecord {
   intensity: number;
 }
 
+interface UserProfile {
+  id: string;
+  name: string;
+  createdAt: string;
+}
+
 const Index = () => {
   const [showTriggerForm, setShowTriggerForm] = useState(false);
   const [triggerRecords, setTriggerRecords] = useState<TriggerRecord[]>([]);
   const [currentStreak, setCurrentStreak] = useState(0);
+  const [currentUser, setCurrentUser] = useState<UserProfile | null>(null);
 
   useEffect(() => {
-    // Carregar registos usando o novo sistema
+    if (currentUser) {
+      storageManager.setCurrentUser(currentUser.id);
+      loadUserData();
+    } else {
+      storageManager.setCurrentUser(null);
+      setTriggerRecords([]);
+      setCurrentStreak(0);
+    }
+  }, [currentUser]);
+
+  const loadUserData = () => {
     const records = storageManager.getTriggerRecords();
     setTriggerRecords(records);
 
@@ -38,7 +57,7 @@ const Index = () => {
       new Date(record.date).toDateString() === today
     );
     setCurrentStreak(todayRecords.length);
-  }, []);
+  };
 
   const addTriggerRecord = (record: Omit<TriggerRecord, 'id'>) => {
     const newRecord = {
@@ -54,6 +73,34 @@ const Index = () => {
   const todayRecords = triggerRecords.filter(record => 
     new Date(record.date).toDateString() === new Date().toDateString()
   ).length;
+
+  // Se não há utilizador selecionado, mostrar apenas o gestor de utilizadores
+  if (!currentUser) {
+    return (
+      <div className="min-h-screen" style={{ backgroundColor: '#F5F5F5' }}>
+        <div className="container mx-auto px-4 py-6 max-w-4xl">
+          {/* Header */}
+          <div className="text-center mb-8">
+            <div className="flex justify-center mb-4">
+              <img 
+                src="/lovable-uploads/8f24ce16-0605-4280-9f46-4cffbbb06664.png" 
+                alt="Fresh Start Logo" 
+                className="h-24 w-auto"
+              />
+            </div>
+            <h1 className="text-3xl font-bold mb-2" style={{ color: '#333333' }}>
+              Fresh Start
+            </h1>
+            <p style={{ color: '#666666' }}>
+              Sua jornada para uma vida sem cigarro, um passo de cada vez
+            </p>
+          </div>
+
+          <UserManager currentUser={currentUser} onUserChange={setCurrentUser} />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#F5F5F5' }}>
@@ -74,6 +121,9 @@ const Index = () => {
             Sua jornada para uma vida sem cigarro, um passo de cada vez
           </p>
         </div>
+
+        {/* User Manager */}
+        <UserManager currentUser={currentUser} onUserChange={setCurrentUser} />
 
         {/* Motivational Message */}
         <MotivationalMessage />

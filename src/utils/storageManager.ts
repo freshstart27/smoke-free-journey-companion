@@ -14,73 +14,98 @@ interface UserData {
 }
 
 class StorageManager {
+  private currentUserId: string | null = null;
+
+  setCurrentUser(userId: string | null): void {
+    this.currentUserId = userId;
+  }
+
+  getCurrentUserId(): string | null {
+    return this.currentUserId;
+  }
+
   private getKey(dataType: keyof UserData): string {
-    return `${STORAGE_PREFIX}_${dataType}`;
+    if (!this.currentUserId) {
+      throw new Error('Nenhum utilizador selecionado');
+    }
+    return `${STORAGE_PREFIX}_${this.currentUserId}_${dataType}`;
   }
 
   // Métodos para registos de tabagismo
   getSmokingRecords(): UserData['smokingRecords'] {
+    if (!this.currentUserId) return [];
     const data = localStorage.getItem(this.getKey('smokingRecords'));
     return data ? JSON.parse(data) : [];
   }
 
   saveSmokingRecords(records: UserData['smokingRecords']): void {
+    if (!this.currentUserId) return;
     localStorage.setItem(this.getKey('smokingRecords'), JSON.stringify(records));
     this.logUserActivity('smoking_record_updated', { recordsCount: records.length });
   }
 
   // Métodos para registos de gatilhos
   getTriggerRecords(): UserData['triggerRecords'] {
+    if (!this.currentUserId) return [];
     const data = localStorage.getItem(this.getKey('triggerRecords'));
     return data ? JSON.parse(data) : [];
   }
 
   saveTriggerRecords(records: UserData['triggerRecords']): void {
+    if (!this.currentUserId) return;
     localStorage.setItem(this.getKey('triggerRecords'), JSON.stringify(records));
     this.logUserActivity('trigger_record_added', { recordsCount: records.length });
   }
 
   // Métodos para feedback
   getFeedback(): UserData['feedback'] {
+    if (!this.currentUserId) return [];
     const data = localStorage.getItem(this.getKey('feedback'));
     return data ? JSON.parse(data) : [];
   }
 
   saveFeedback(feedback: UserData['feedback']): void {
+    if (!this.currentUserId) return;
     localStorage.setItem(this.getKey('feedback'), JSON.stringify(feedback));
     this.logUserActivity('feedback_submitted', { feedbackCount: feedback.length });
   }
 
   // Métodos para meta diária
   getDailyTarget(): number {
+    if (!this.currentUserId) return 20;
     const data = localStorage.getItem(this.getKey('dailyTarget'));
     return data ? parseInt(data) : 20;
   }
 
   saveDailyTarget(target: number): void {
+    if (!this.currentUserId) return;
     localStorage.setItem(this.getKey('dailyTarget'), target.toString());
     this.logUserActivity('daily_target_changed', { newTarget: target });
   }
 
   // Métodos para configurações do utilizador
   getUserSettings(): UserData['userSettings'] {
+    if (!this.currentUserId) return { cigarettePrice: 0.50, startDate: new Date().toISOString() };
     const data = localStorage.getItem(this.getKey('userSettings'));
     return data ? JSON.parse(data) : { cigarettePrice: 0.50, startDate: new Date().toISOString() };
   }
 
   saveUserSettings(settings: UserData['userSettings']): void {
+    if (!this.currentUserId) return;
     localStorage.setItem(this.getKey('userSettings'), JSON.stringify(settings));
     this.logUserActivity('settings_updated', settings);
   }
 
   // Registo de atividade do utilizador
   private logUserActivity(action: string, data: any): void {
+    if (!this.currentUserId) return;
     const activityLog = this.getActivityLog();
     activityLog.push({
       timestamp: new Date().toISOString(),
       action,
       data,
-      sessionId: this.getSessionId()
+      sessionId: this.getSessionId(),
+      userId: this.currentUserId
     });
     
     // Manter apenas os últimos 1000 registos para não sobrecarregar o storage
@@ -91,7 +116,8 @@ class StorageManager {
     localStorage.setItem(this.getKey('activityLog' as keyof UserData), JSON.stringify(activityLog));
   }
 
-  getActivityLog(): Array<{timestamp: string; action: string; data: any; sessionId: string}> {
+  getActivityLog(): Array<{timestamp: string; action: string; data: any; sessionId: string; userId?: string}> {
+    if (!this.currentUserId) return [];
     const data = localStorage.getItem(this.getKey('activityLog' as keyof UserData));
     return data ? JSON.parse(data) : [];
   }
@@ -105,8 +131,19 @@ class StorageManager {
     return sessionId;
   }
 
-  // Exportar todos os dados do utilizador
+  // Exportar todos os dados do utilizador atual
   exportAllData(): UserData & { activityLog: any[] } {
+    if (!this.currentUserId) {
+      return {
+        smokingRecords: [],
+        triggerRecords: [],
+        feedback: [],
+        dailyTarget: 20,
+        userSettings: { cigarettePrice: 0.50, startDate: new Date().toISOString() },
+        activityLog: []
+      };
+    }
+
     return {
       smokingRecords: this.getSmokingRecords(),
       triggerRecords: this.getTriggerRecords(),
@@ -119,31 +156,17 @@ class StorageManager {
 
   // Migrar dados existentes para a nova estrutura
   migrateOldData(): void {
-    // Migrar dados antigos se existirem
-    const oldSmokingRecords = localStorage.getItem('smokingRecords');
-    const oldTriggerRecords = localStorage.getItem('triggerRecords');
-    const oldFeedback = localStorage.getItem('appFeedback');
-    const oldDailyTarget = localStorage.getItem('dailyTarget');
+    // Este método agora não faz migração automática
+    // A migração deve ser feita manualmente se necessário
+  }
 
-    if (oldSmokingRecords && !localStorage.getItem(this.getKey('smokingRecords'))) {
-      this.saveSmokingRecords(JSON.parse(oldSmokingRecords));
-      localStorage.removeItem('smokingRecords');
-    }
-
-    if (oldTriggerRecords && !localStorage.getItem(this.getKey('triggerRecords'))) {
-      this.saveTriggerRecords(JSON.parse(oldTriggerRecords));
-      localStorage.removeItem('triggerRecords');
-    }
-
-    if (oldFeedback && !localStorage.getItem(this.getKey('feedback'))) {
-      this.saveFeedback(JSON.parse(oldFeedback));
-      localStorage.removeItem('appFeedback');
-    }
-
-    if (oldDailyTarget && !localStorage.getItem(this.getKey('dailyTarget'))) {
-      this.saveDailyTarget(parseInt(oldDailyTarget));
-      localStorage.removeItem('dailyTarget');
-    }
+  // Limpar dados do utilizador atual
+  clearUserData(): void {
+    if (!this.currentUserId) return;
+    const keys = Object.keys(localStorage).filter(key => 
+      key.startsWith(`${STORAGE_PREFIX}_${this.currentUserId}_`)
+    );
+    keys.forEach(key => localStorage.removeItem(key));
   }
 
   // Limpar todos os dados (para testes ou reset)
@@ -156,6 +179,3 @@ class StorageManager {
 
 // Exportar instância única
 export const storageManager = new StorageManager();
-
-// Executar migração automaticamente
-storageManager.migrateOldData();
