@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Calendar, Heart, TrendingUp, Bell, Plus, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -13,6 +12,7 @@ import QuitBenefits from '@/components/QuitBenefits';
 import FeedbackForm from '@/components/FeedbackForm';
 import DataExport from '@/components/DataExport';
 import UserManager from '@/components/UserManager';
+import AdminPanel from '@/components/AdminPanel';
 import { storageManager } from '@/utils/storageManager';
 
 interface TriggerRecord {
@@ -263,6 +263,7 @@ const Index = () => {
           </TabsContent>
 
           <TabsContent value="feedback" className="space-y-6">
+            <AdminPanel />
             <FeedbackForm />
             <DataExport />
           </TabsContent>
